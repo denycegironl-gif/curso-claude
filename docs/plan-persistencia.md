@@ -21,8 +21,7 @@ arranque manual con `docker compose up -d` + `uv run uvicorn app.main:app
 
 **Estado**: completado. Dependencias agregadas, `app/db.py` creado, ruff y
 pytest en verde, conexión real verificada contra el Postgres de
-`compose.yaml`, `GET /health` intacto. Cambios en working tree, pendientes de
-commit.
+`compose.yaml`, `GET /health` intacto.
 
 ## Incremento 2 — Alembic inicializado, sin modelos de negocio todavía
 
@@ -34,7 +33,10 @@ migración inicial para validar `upgrade`/`downgrade` contra el Postgres del
 **Comprobación**: `uv run alembic upgrade head` corre sin error contra base
 vacía; `uv run alembic downgrade base` corre limpio; ruff y pytest en verde.
 
-**Estado**: pendiente.
+**Estado**: completado. Alembic agregado como dependencia de dev,
+`migrations/env.py` lee la URL desde `app.db.get_settings()`, migración
+inicial vacía generada; `upgrade`/`downgrade` verificados contra el Postgres
+de `compose.yaml`, ruff y pytest en verde.
 
 ## Incremento 3 — Modelo y migración del catálogo de estados
 
@@ -45,7 +47,10 @@ idempotente; `downgrade` que revierte limpio.
 **Comprobación**: `upgrade` desde vacío puebla las 4 filas; correr `upgrade`
 dos veces no duplica; `downgrade` elimina sin error.
 
-**Estado**: pendiente.
+**Estado**: completado. Modelo `State` (`id`, `code`, `sort_order`) y
+migración que crea `states` y siembra el catálogo con
+`ON CONFLICT DO NOTHING`; verificado que el seed no duplica y que
+`downgrade` limpia la tabla sin error.
 
 ## Incremento 4 — `GET /states` contra la base real
 
@@ -55,4 +60,6 @@ como desempate; esquema exacto `{"id": ..., "code": ...}`.
 **Comprobación**: test nuevo que falla antes del incremento y pasa después;
 `uv run pytest -q` completo en verde; ruff limpio.
 
-**Estado**: pendiente.
+**Estado**: completado. Endpoint implementado contra la base real, ordenado
+por `sort_order` e `id` como desempate, esquema exacto `{"id", "code"}`; test
+verificado en rojo antes y en verde después, pytest y ruff en verde.
