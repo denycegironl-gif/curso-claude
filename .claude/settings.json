@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv run pytest *)",
+      "Bash(uv run ruff check *)",
+      "Bash(uv add *)",
+      "Bash(uv run alembic *)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git branch*)",
+      "Bash(git diff*)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git mv *)",
+      "Bash(git stash *)"
+    ],
+    "ask": [
+      "Bash(git push *)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Bash(docker compose down *-v*)",
+      "Bash(docker compose down *--volumes*)"
+    ]
+  }
+}
